@@ -1,3 +1,8 @@
+Website to book and posts trips in JavaScript using Node, MongoDB and Express.
+
+
+How to run:
+
 docker run -d -p 27017:27017 --name project mongo:latest
 
 
