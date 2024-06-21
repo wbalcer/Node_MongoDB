@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trip to <%= trip.destination %></title>
+</head>
+<body>
+    <h1><%= trip.destination %> - <%= trip.price %>PLN</h1>
+    <p>Trip by <%= trip.email %></p>
+    <p class="date"><%= trip.date %></p>
+    <% if (email === trip.email) { %>
+        <a href="/mytrip/<%= trip.id %>">Manage trip</a>
+    <% } %>
+    <form action="/" method="GET" style="display: inline-block">
+        <button type="submit">Return</button>
+    </form>
+    <form action="/reservation/<%= trip.id %>" method="POST" style="display: inline-block">
+        <select name="food">
+            <option value="Vege">Vege</option>
+            <option value="Regular">Regular</option>
+        </select>
+        <button type="submit">Reserve</button>
+    </form>
+</body>
+</html>

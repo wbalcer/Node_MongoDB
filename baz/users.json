@@ -1,0 +1,36 @@
+[
+  {
+    "first_name": "admin",
+    "last_name": "admin",
+    "email": "admin@admin.pl",
+    "phone_number": 2345678901,
+    "password": "admin",
+    "role": "Admin"
+  },
+  {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "user@user.pl",
+      "phone_number": 1234567890,
+      "password": "a",
+      "role": "User"
+  },
+  {
+    "first_name": "Wojciech",
+    "last_name": "Balcer",
+    "email": "wojtek@balcer.pl",
+    "phone_number": 999999999,
+    "password": "abc",
+    "role": "User"
+  },
+  {
+    "first_name": "Jan",
+    "last_name": "Kowalski",
+    "email": "kowalskijan@gmail.pl",
+    "phone_number": 111111111,
+    "password": "z",
+    "role": "User"
+  }
+
+]
+  

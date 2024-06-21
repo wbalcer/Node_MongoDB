@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit trip to <%= trip.destination %>e</title>
+    <script>
+        async function updateTrip(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const tripId = form.dataset.tripId;
+            const data = {
+                destination: form.destination.value,
+                price: form.price.value,
+                date: form.date.value
+            };
+
+            try {
+                const response = await fetch(`/mytrip/${tripId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('Trip updated successfully');
+                } else {
+                    alert('Error updating trip');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating trip');
+            }
+        }
+
+        async function deleteTrip(tripId) {
+            if (confirm('Are you sure you want to delete your trip? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/mytrip/${tripId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    alert('Trip deleted successfully');
+                    window.location.href = '/';
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error deleting trip');
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Edit</h1>
+    <form onsubmit="updateTrip(event)" data-trip-id="<%= trip._id %>">
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" name="destination" value="<%= trip.destination %>">
+        <label for="price">price:</label>
+        <input type="number" id="price" name="price" value="<%= trip.price %>">
+        <label for="date">date:</label>
+        <input type="date" id="date" name="date">
+        <button type="submit">Submit</button>
+    </form>
+
+    <form action="/" method="GET" style="display: inline-block">
+        <button type="submit">Return</button>
+    </form>
+    <button onclick="deleteTrip('<%= trip._id %>')">Delete trip</button>
+</body>
+</html>

@@ -1,0 +1,23 @@
+[
+    {
+      "email": "admin@admin.pl",
+      "trip_id": "60b6c3c2edc8f12345678903",
+      "food": "Vege"
+    },
+    {
+      "email": "user@user.pl",
+      "trip_id": "60b6c3c2edc8f12345678904",
+      "food": "Regular"
+    },
+    {
+      "email": "kowalskijan@gmail.pl",
+      "trip_id": "60b6c3c2edc8f12345678904",
+      "food": "Vege"
+    },
+    {
+      "email": "kowalskijan@gmail.pl",
+      "trip_id": "60b6c3c2edc8f12345678904",
+      "food": "Vege"
+    }
+  ]
+  

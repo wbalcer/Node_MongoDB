@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My reservations</title>
+    <script>
+        async function updateReservation(event) {
+            event.preventDefault();
+            const button = event.target;
+            const reservationId = button.getAttribute('data-reservation-id');
+
+            try {
+                const response = await fetch(`/reservation/${reservationId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                alert('Reservation updated successfully');
+                window.location.reload()
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating reservation');
+            }
+        }
+
+        async function cancelTrip(reservation_id) {
+            if (confirm('Are you sure you want to cancel your reservation? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/reservations/${reservation_id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    alert('Trip cancelled successfully');
+                    window.location.href='/'
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error cancelling trip');
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>My Reservations</h1>
+    <ul>
+        <% reservations.forEach(function(reservation) { %>
+            <li>
+                <strong>Trip Destination:</strong> <%= reservation.trip_id.destination %> - <%= reservation.trip_id.price %>PLN - <%= reservation.food %> - <%= reservation.trip_id.date %><br>
+                <button onclick="updateReservation(event)" data-reservation-id="<%= reservation._id %>">Swap Meal Plan</button>
+                <button onclick="cancelTrip('<%= reservation._id %>')">Cancel trip</button>
+            </li>
+        <% }); %>
+    </ul>
+    <form action="/" method="GET" style="display: inline-block">
+        <button type="submit">Return</button>
+    </form>
+</body>
+</html>

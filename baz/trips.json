@@ -1,0 +1,27 @@
+[
+    {
+      "destination": "Paris",
+      "price": 1200,
+      "date": "2024-07-01T00:00:00.000Z",
+      "email": "user@user.pl"
+    },
+    {
+      "destination": "New York",
+      "price": 850,
+      "date": "2024-08-15T00:00:00.000Z",
+      "email": "user@user.pl"
+    },
+    {
+      "destination": "Prague",
+      "price": 85,
+      "date": "2024-09-15T00:00:00.000Z",
+      "email": "wojtek@balcer.pl"
+    },
+    {
+      "destination": "Mexico City",
+      "price": 850,
+      "date": "2025-07-19T00:00:00.000Z",
+      "email": "admin@admin.pl"
+    }
+  ]
+  

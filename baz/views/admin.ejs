@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+    <script>
+        async function updateTrip(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const tripId = form.dataset.tripId;
+            const data = {
+                destination: form.destination.value,
+                price: form.price.value,
+                date: form.date.value
+            };
+
+            try {
+                const response = await fetch(`/mytrip/${tripId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                alert('Trip updated successfully');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating trip');
+            }
+        }
+
+        async function deleteTrip(tripId) {
+            if (confirm('Are you sure you want to delete your trip? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/mytrip/${tripId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    alert('Trip deleted successfully');
+                    window.location.href = '/';
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error deleting trip');
+                }
+            }
+        }
+        async function updateProfile(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const userId = form.dataset.userId;
+            const data = {
+                first_name: form.first_name.value,
+                last_name: form.last_name.value,
+                email: form.email.value,
+                phone_number: form.phone_number.value,
+                password: form.password.value
+            };
+
+            try {
+                const response = await fetch(`/myprofile/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('Profile updated successfully');
+                } else {
+                    alert('Error updating profile');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating profile');
+            }
+        }
+
+        async function deleteProfile(userId) {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/myprofile/${userId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    alert('Account deleted successfully');
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error deleting account');
+                }
+            }
+        }
+        async function updateReservation(event) {
+            event.preventDefault();
+            const button = event.target;
+            const reservationId = button.getAttribute('data-reservation-id');
+
+            try {
+                const response = await fetch(`/reservation/${reservationId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                alert('Reservation updated successfully');
+                window.location.reload()
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating reservation');
+            }
+        }
+
+        async function cancelTrip(reservation_id) {
+            if (confirm('Are you sure you want to cancel your reservation? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/reservations/${reservation_id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    alert('Trip cancelled successfully');
+                    window.location.href='/'
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error cancelling trip');
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Admin panel</h1>
+
+
+    <form method="GET" action="/admin">
+        <h2>Filter and Sort Options</h2>
+        <div>
+            <h3>Trips</h3>
+            <label for="tripDestinationFilter">Destination:</label>
+            <input type="text" id="tripDestinationFilter" name="tripDestinationFilter" value="<%= tripDestinationFilter %>">
+            <label for="tripSort">Sort by:</label>
+            <select id="tripSort" name="tripSort">
+                <option value="">Select</option>
+                <option value="destination">Destination</option>
+                <option value="price">Price</option>
+                <option value="date">Date</option>
+            </select>
+        </div>
+        <div>
+            <h3>Users</h3>
+            <label for="userRoleFilter">Role:</label>
+            <input type="text" id="userRoleFilter" name="userRoleFilter" value="<%= userRoleFilter %>">
+            <label for="userSort">Sort by:</label>
+            <select id="userSort" name="userSort">
+                <option value="">Select</option>
+                <option value="first_name">First Name</option>
+                <option value="last_name">Last Name</option>
+                <option value="email">Email</option>
+            </select>
+        </div>
+        <div>
+            <h3>Reservations</h3>
+            <label for="reservationMealFilter">Meal:</label>
+            <input type="text" id="reservationMealFilter" name="reservationMealFilter" value="<%= reservationMealFilter %>">
+            <label for="reservationSort">Sort by:</label>
+            <select id="reservationSort" name="reservationSort">
+                <option value="">Select</option>
+                <option value="email">Email</option>
+                <option value="meal">Meal</option>
+            </select>
+        </div>
+        <button type="submit">Apply Filters and Sorts</button>
+    </form>
+
+    <h2>Trips</h2>
+    <ul>
+        <% trips.forEach(trip => { %>
+            <li><%= trip.destination %> - <%= trip.price %> PLN - <%= trip.date %> </li>
+            <p><%= trip.description %></p>
+            <form onsubmit="updateTrip(event)" data-trip-id="<%= trip._id %>">
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" name="destination" value="<%= trip.destination %>">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" value="<%= trip.price %>">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date">
+                <button type="submit">Submit</button>
+            </form>
+            <button onclick="deleteTrip('<%= trip._id %>')">Delete trip</button>
+        <% }) %>
+    </ul>
+    <div>
+        <button onclick="window.location.href='/admin?tripPage=<%= tripPage > 1 ? tripPage - 1 : 1 %>&tripLimit=<%= tripLimit %>'" <%= tripPage === 1 ? 'disabled' : '' %>>Previous</button>
+        <span>Page <%= tripPage %> of <%= tripTotalPages %></span>
+        <button onclick="window.location.href='/admin?tripPage=<%= tripPage < tripTotalPages ? tripPage + 1 : tripTotalPages %>&tripLimit=<%= tripLimit %>'" <%= tripPage === tripTotalPages ? 'disabled' : '' %>>Next</button>
+    </div>
+
+    <h2>Users</h2>
+    <ul>
+        <% users.forEach(user => { %>
+            <li><%= user.first_name %> <%= user.last_name %> - <%= user.email %></li>
+        <% }) %>
+    </ul>
+    <div>
+        <button onclick="window.location.href='/admin?userPage=<%= userPage > 1 ? userPage - 1 : 1 %>&userLimit=<%= userLimit %>'" <%= userPage === 1 ? 'disabled' : '' %>>Previous</button>
+        <span>Page <%= userPage %> of <%= userTotalPages %></span>
+        <button onclick="window.location.href='/admin?userPage=<%= userPage < userTotalPages ? userPage + 1 : userTotalPages %>&userLimit=<%= userLimit %>'" <%= userPage === userTotalPages ? 'disabled' : '' %>>Next</button>
+    </div>
+
+    <h2>Reservations</h2>
+    <ul>
+        <% reservations.forEach(reservation => { %>
+            <li><%= reservation.trip_id.destination %> - <%= reservation.trip_id.price %> PLN - <%= reservation.trip_id.date %> </li>
+            <p><%= reservation.email %></p>
+        <% }) %>
+    </ul>
+    <div>
+        <button onclick="window.location.href='/admin?reservationPage=<%= reservationPage > 1 ? reservationPage - 1 : 1 %>&reservationLimit=<%= reservationLimit %>'" <%= reservationPage === 1 ? 'disabled' : '' %>>Previous</button>
+        <span>Page <%= reservationPage %> of <%= reservationTotalPages %></span>
+        <button onclick="window.location.href='/admin?reservationPage=<%= reservationPage < reservationTotalPages ? reservationPage + 1 : reservationTotalPages %>&reservationLimit=<%= reservationLimit %>'" <%= reservationPage === reservationTotalPages ? 'disabled' : '' %>>Next</button>
+    </div>
+</body>
+</html>
