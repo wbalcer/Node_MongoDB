@@ -1,4 +1,4 @@
-Website to book and posts trips in JavaScript using Node, MongoDB and Express.
+Website to book and post trips in JavaScript using Node, MongoDB and Express.
 
 
 How to run:
