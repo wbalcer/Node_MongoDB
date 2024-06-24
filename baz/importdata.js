@@ -6,10 +6,7 @@ const Trip = require('./models/trip');
 const Reservation = require('./models/reservation');
 const api = require('./api');
 
-mongoose.connect('mongodb://localhost:27017/project', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect('mongodb://localhost:27017/project', {}).then(() => {
     console.log('Connected to MongoDB');
     importData().then(() => {
         console.log('Import completed successfully');
@@ -64,7 +61,7 @@ async function importData() {
                 food: reservation.food
             });
             await newReservation.save();
-            console.log(`Saved reservation for user ${user.email} and trip to ${randomTrip.destination}`);
+            console.log(`Saved reservation for user ${user.email}, a trip to ${randomTrip.destination}`);
         }
     } catch (err) {
         console.error('Error importing data:', err);

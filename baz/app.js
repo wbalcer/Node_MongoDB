@@ -166,10 +166,21 @@ app.get('/users', async (req, res) => {
 app.post('/register', async (req, res) => {
     try {
         const userData = req.body;
+        if (!userData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+            return res.status(400).send('Invalid email format.');
+        }
+        if (!userData.password || userData.password.length < 5) {
+            return res.status(400).send('Password must be at least 5 characters long.');
+        }
+        const existingUser = await api.getUserByEmail(userData.email);
+        if (existingUser) {
+            return res.status(409).send('User already exists.');
+        }
         const hashedPassword = await bcrypt.hash(userData.password, 10);
         const user = new User({ ...userData, password: hashedPassword, role: 'User' });
         await api.saveUser(user);
         res.redirect('/login');
+        
     } catch (err) {
         console.error('Error adding user:', err);
         res.status(500).send(err);

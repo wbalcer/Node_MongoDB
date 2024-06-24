@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const UserSchema = new mongoose.Schema({
     first_name: {
@@ -12,15 +13,24 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate: {
+            validator: (value) => validator.isEmail(value),
+            message: (props) => `${props.value} is not a valid email!`
+        }
     },
     phone_number: {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        validate: {
+            validator: (value) => validator.isMobilePhone(value, 'any'),
+            message: (props) => `${props.value} is not a valid phone number!`
+        }
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 5
     },
     role: {
         type: String,
