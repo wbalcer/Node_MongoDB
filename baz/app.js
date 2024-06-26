@@ -190,7 +190,7 @@ app.post('/register', async (req, res) => {
 // Update user
 app.put('/myprofile/:id', async (req, res) => {
     const userId = req.params.id;
-    const { first_name, last_name, email, phone_number, password } = req.body;
+    const { first_name, last_name, phone_number, password } = req.body;
 
     try {
         let user = await api.getUserById(userId);
@@ -387,7 +387,7 @@ app.delete('/reservations/:id', async (req, res) => {
 
 
 
-mongoose.connect('mongodb://localhost:27017/project', {
+mongoose.connect('mongodb://172.17.176.1:27017/project', {
 }).then(() => {
 }).catch(err => {
     console.error('Could not connect to MongoDB', err);
@@ -397,4 +397,5 @@ app.use(mw.errorHandler);
 
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {});
+const host = process.env.HOST || '0.0.0.0';
+app.listen(port, host, () => {});

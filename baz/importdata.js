@@ -6,7 +6,7 @@ const Trip = require('./models/trip');
 const Reservation = require('./models/reservation');
 const api = require('./api');
 
-mongoose.connect('mongodb://localhost:27017/project', {}).then(() => {
+mongoose.connect('mongodb://172.17.176.1:27017/project', {}).then(() => {
     console.log('Connected to MongoDB');
     importData().then(() => {
         console.log('Import completed successfully');
