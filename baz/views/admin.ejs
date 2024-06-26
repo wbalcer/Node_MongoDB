@@ -206,6 +206,20 @@
     <ul>
         <% users.forEach(user => { %>
             <li><%= user.first_name %> <%= user.last_name %> - <%= user.email %></li>
+            <form onsubmit="updateProfile(event)" data-user-id="<%= user._id %>">
+                <label for="first_name">First name:</label>
+                <input type="text" id="first_name" name="first_name" value="<%= user.first_name %>">
+                <label for="last_name">Last name:</label>
+                <input type="text" id="last_name" name="last_name" value="<%= user.last_name %>">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" value="<%= user.email %>">
+                <label for="phone_number">Phone number:</label>
+                <input type="text" id="phone_number" name="phone_number" value="<%= user.phone_number %>">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+                <button type="submit">Submit</button>
+            </form>
+            <button onclick="deleteProfile('<%= user._id %>')">Delete account</button>
         <% }) %>
     </ul>
     <div>
@@ -219,6 +233,8 @@
         <% reservations.forEach(reservation => { %>
             <li><%= reservation.trip_id.destination %> - <%= reservation.trip_id.price %> PLN - <%= reservation.trip_id.date %> </li>
             <p><%= reservation.email %></p>
+            <button onclick="updateReservation(event)" data-reservation-id="<%= reservation._id %>">Swap Meal Plan</button>
+            <button onclick="cancelTrip('<%= reservation._id %>')">Cancel trip</button>
         <% }) %>
     </ul>
     <div>
